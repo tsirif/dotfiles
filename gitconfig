@@ -1,0 +1,16 @@
+[user]
+  name = Christos Tsirigotis
+  email = tsirif@gmail.com
+
+[color]
+  ui = true
+
+[log]
+  decorate = full
+
+[push]
+  default = tracking
+
+[alias]
+  tree = log --abbrev-commit --pretty=oneline --graph --all
+
