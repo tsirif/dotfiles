@@ -13,12 +13,12 @@
 [submodule ".vim/bundle/vim-ros"]
 	path = .vim/bundle/vim-ros
 	url = https://github.com/taketwo/vim-ros.git
-[submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
+[submodule ".vim/bundle/vim-fugitive"]
+	path = .vim/bundle/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
-[submodule "vim/bundle/pyflakes-vim"]
-	path = vim/bundle/pyflakes-vim
+[submodule ".vim/bundle/pyflakes-vim"]
+	path = .vim/bundle/pyflakes-vim
 	url = git://github.com/kevinw/pyflakes-vim.git
-[submodule "vim/bundle/jedi-vim"]
-	path = vim/bundle/jedi-vim
+[submodule ".vim/bundle/jedi-vim"]
+	path = .vim/bundle/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
