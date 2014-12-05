@@ -52,3 +52,9 @@
 [submodule ".vim/bundle/unite.vim"]
 	path = .vim/bundle/unite.vim
 	url = git@github.com:Shougo/unite.vim.git
+[submodule ".vim/bundle/neomru.vim"]
+	path = .vim/bundle/neomru.vim
+	url = git@github.com:Shougo/neomru.vim.git
+[submodule ".vim/bundle/vimproc.vim"]
+	path = .vim/bundle/vimproc.vim
+	url = git@github.com:Shougo/vimproc.vim.git
