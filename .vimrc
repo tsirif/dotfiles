@@ -24,12 +24,12 @@ set mousemodel=popup_setpos " Right-click on selection should bring up a menu
 
 " Unicode support (taken from http://vim.wikia.com/wiki/Working_with_Unicode)
 if has("multi_byte")
-if &termencoding == ""
-let &termencoding = &encoding
-endif
-set encoding=utf-8
-setglobal fileencoding=utf-8
-set fileencodings=ucs-bom,utf-8,latin1
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  set fileencodings=ucs-bom,utf-8,latin1
 endif
 
 " The "longest" option makes completion insert the longest prefix of all
@@ -50,9 +50,10 @@ syntax enable
 " enable pathogen
 execute pathogen#infect()
 
+
 " DISPLAY SETTINGS
 set background=dark " enable for dark terminals
-set scrolloff=2 " 2 lines above/below cursor when scrollin
+"set scrolloff=2 " 2 lines above/below cursor when scrollin
 set showmatch " show matching bracket (briefly jump)
 set matchtime=2 " reduces matching paren blink time from the 5[00]ms def
 set showcmd " show typed command in status bar
@@ -76,7 +77,8 @@ set copyindent " copy the previous indentation on autoindenting
 set smarttab " smart tab handling for indenting
 set magic " change the way backslashes are used in search patterns
 set bs=indent,eol,start " Allow backspacing over everything in insert mode
-"set nobackup " no backup~ files.
+set nobackup " no backup~ files.
+set noswapfile " no .swp files.
 set tabstop=2 " number of spaces a tab counts for
 set shiftwidth=2 " spaces for autoindents
 set softtabstop=2
@@ -125,7 +127,7 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 " reach the limit; in Normal mode, you can reformat the current paragraph with
 " gqap.
 set textwidth=80
- "this makes the color after the textwidth column highlighted
+"this makes the color after the textwidth column highlighted
 set colorcolumn=81
 highlight ColorColumn ctermbg=233
 
@@ -155,8 +157,10 @@ autocmd FileType gitcommit setlocal spell
 
 " FILETYPES SETTINGS
 " add custom filetypes
-au BufNewFile,BufRead *.launch set filetype=xml
-
+autocmd BufNewFile,BufRead *.launch set filetype=xml
+" avr IDE
+autocmd BufNewFile,BufRead *.asm set filetype=avr8bit
+autocmd BufNewFile,BufRead *.asm setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
 "****************************  CUSTOM MAPS  ************************************
 nmap <leader>fef :call Preserve("normal gg=G")<CR> " format all
@@ -201,7 +205,7 @@ noremap <leader>ss z=
 vnoremap < <gv
 vnoremap > >gv
 
- " reselect last paste
+" reselect last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Move to the end of line
@@ -216,21 +220,21 @@ map <Leader>ws :StripWhitespace<CR>:w<CR>
 map <leader>tn <Esc> :tabnew<CR>
 map <leader>tc <Esc> :tabclose<CR>
 
- " remap arrow keys
-nnoremap <c-up> :bprev<CR>
-nnoremap <c-down> :bnext<CR>
-nnoremap <c-right> :tabnext<CR>
-nnoremap <c-left> :tabprev<CR>
+" remap arrow keys
+nnoremap <c-up> <Esc> :bprev<CR>
+nnoremap <c-down> <Esc> :bnext<CR>
+nnoremap <c-right> <Esc> :tabnext<CR>
+nnoremap <c-left> <Esc> :tabprev<CR>
 
 " Bind Ctrl+<movement> keys to move around the windows,
 " instead of using Ctrl+w + <movement>
-nnoremap <s-right> <c-w>l
-nnoremap <s-left> <c-w>h
+nnoremap <s-right> <Esc><c-w>l
+nnoremap <s-left> <Esc><c-w>h
 
 
 "****************************  PLUGIN SETTINGS  ********************************
 "****************************  Startify SETTINGS  ******************************
-"let g:startify_session_dir = s:get_cache_dir('sessions')
+let g:startify_session_dir = "/home/tsirif/.vim-sessions"
 let g:startify_change_to_vcs_root = 1
 let g:startify_show_sessions = 1
 nnoremap <F1> :Startify<cr>
@@ -244,16 +248,20 @@ let g:syntastic_style_warning_symbol = '≈'
 "****************************  NERDTree SETTINGS  ******************************
 " toggle NERDTree with Ctrl+n
 map <C-n> :NERDTreeToggle<CR>
-" TagBar SETTINGS
+
+"****************************  NERDCommenter SETTINGS  *************************
+" leave sapce after comment
+let g:NERDSpaceDelims = 1
+
+"****************************  TagBar SETTINGS  ********************************
 " toogle TagBar with <F8dfa>
 nmap <F8> :TagbarToggle<CR>
 
-" MatchTagAlways SETTINGS
+"****************************  MatchTagAlways SETTINGS  ************************
 " option for MatchTagAlways
 let g:mta_use_matchparen_group = 1
 
 "****************************  Fugitive SETTINGS  ******************************
-
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -267,7 +275,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 "****************************  Unite SETTINGS  *********************************
 " should install ack-grep
 let g:unite_source_grep_command='ack-grep'
-let g:unite_source_grep_default_opts='--no-heading --no-color -C4'
+let g:unite_source_grep_default_opts='--no-heading -C4'
 let g:unite_source_grep_recursive_opt=''
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -288,30 +296,49 @@ nnoremap <C-p> :Unite file_rec/async<cr>
 
 "****************************  YouCompleteMe SETTINGS  *************************
 let g:ycm_complete_in_comments_and_strings=1
-let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_key_list_select_completion=['<tab>', '<Down>']
+let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
 let g:ycm_filetype_blacklist={'unite': 1}
-
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
 
 "****************************  UltiSnips SETTINGS  *****************************
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsSnippetsDir='~/.vim/snippets'
+"" Trigger configuration.
+"" Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsListSnippets="<c-`>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "private-snippets"]
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+let g:ultisnips_python_style="DOXYGEN"
+
+" Unite - UltiSnips Integration
+function! UltiSnipsCallUnite()
+  Unite -start-insert -winheight=100 -immediately -no-empty ultisnips
+  return ''
+endfunction
+
+inoremap <silent> <F12> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
+nnoremap <silent> <F12> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 "***************************  Sneak SETTINGS  **********************************
 let g:sneak#streak = 1
 
 "****************************  Python IDE Setup  *******************************
 " Use pylint, should be installed
-let g:syntastic_python_checkers = ['pylint', 'pep8', 'flake8']
-let g:syntastic_python_python_exec = '/usr/bin/python2/'
+let g:syntastic_python_checkers = ['python', 'pep8', 'flake8']
+let g:syntastic_python_python_exec = '/usr/bin/python2'
 
 " YouCompleteMe
-let g:ycm_auto_trigger=1
+let g:ycm_auto_trigger = 1
 let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+
+" Configure Eclim and Syntastic integration for python
+let g:EclimPythonValidate = 0
 
 " Settings for ctrlp
 let g:ctrlp_max_height = 30
@@ -322,10 +349,10 @@ set wildignore+=*.o
 set wildignore+=*~
 
 " Settings for jedi-vim
-"let g:jedi#usages_command = "<leader>z"
-"let g:jedi#popup_on_dot = 0
-"let g:jedi#popup_select_first = 0
-"map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
+let g:jedi#usages_command = "<leader>z"
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+" map <Leader>br Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
 
 " Better navigating through omnicomplete option list
 " See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
@@ -362,7 +389,7 @@ let g:airline#extensions#tabline#left_sep=' '
 let g:airline#extensions#tabline#left_alt_sep='¦'
 " change default font for gvim to enable powerline symbols
 if has('gui_running')
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 endif
 
 "****************************  vim colorscheme themes  *************************
@@ -385,6 +412,6 @@ let g:vimshell_editor_command='vim'
 let g:vimshell_right_prompt='getcwd()'
 "let g:vimshell_data_directory=s:get_cache_dir('vimshell')
 let g:vimshell_vimshrc_path='~/.vim/vimshrc'
-nnoremap <leader>cc :VimShell -split<cr>
+nnoremap <leader>cs :VimShell -split<cr>
 nnoremap <leader>cr :VimShellInteractive irb<cr>
 nnoremap <leader>cp :VimShellInteractive python<cr>
