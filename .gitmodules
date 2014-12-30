@@ -58,3 +58,12 @@
 [submodule ".vim/bundle/vimproc.vim"]
 	path = .vim/bundle/vimproc.vim
 	url = git@github.com:Shougo/vimproc.vim.git
+[submodule ".vim/bundle/jedi-vim"]
+	path = .vim/bundle/jedi-vim
+	url = git@github.com:davidhalter/jedi-vim.git
+[submodule ".vim/bundle/vim-snippets"]
+	path = .vim/bundle/vim-snippets
+	url = git@github.com:tsirif/vim-snippets.git
+[submodule ".vim/bundle/ultisnips"]
+	path = .vim/bundle/ultisnips
+	url = git@github.com:SirVer/ultisnips.git
