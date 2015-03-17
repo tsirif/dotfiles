@@ -209,9 +209,9 @@ vnoremap > >gv
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Move to the end of line
-noremap <leader>d $
+nnoremap <leader>' $
 " Move to the start of line
-noremap <leader>a ^
+nnoremap <leader>a ^
 
 " Clean all whitespace and save
 map <Leader>ws :StripWhitespace<CR>:w<CR>
@@ -300,6 +300,8 @@ let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
+let g:ycm_auto_trigger = 1
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf'
 let g:ycm_filetype_blacklist={'unite': 1}
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
@@ -314,7 +316,7 @@ let g:UltiSnipsListSnippets="<c-`>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "private-snippets"]
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-let g:ultisnips_python_style="DOXYGEN"
+let g:ultisnips_python_style="doxygen"
 
 " Unite - UltiSnips Integration
 function! UltiSnipsCallUnite()
@@ -330,12 +332,8 @@ let g:sneak#streak = 1
 
 "****************************  Python IDE Setup  *******************************
 " Use pylint, should be installed
-let g:syntastic_python_checkers = ['python', 'pep8', 'flake8']
+let g:syntastic_python_checkers = ['pylint', 'pep8', 'flake8']
 let g:syntastic_python_python_exec = '/usr/bin/python2'
-
-" YouCompleteMe
-let g:ycm_auto_trigger = 1
-let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 
 " Configure Eclim and Syntastic integration for python
 let g:EclimPythonValidate = 0
