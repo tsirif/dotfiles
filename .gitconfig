@@ -13,4 +13,3 @@
 
 [alias]
   tree = log --abbrev-commit --pretty=oneline --graph --all
-

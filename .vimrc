@@ -301,7 +301,7 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
 let g:ycm_auto_trigger = 1
-let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf'
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 let g:ycm_filetype_blacklist={'unite': 1}
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
@@ -350,7 +350,7 @@ set wildignore+=*~
 let g:jedi#usages_command = "<leader>z"
 let g:jedi#popup_on_dot = 0
 let g:jedi#popup_select_first = 0
-" map <Leader>br Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
+map <Leader>br Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
 
 " Better navigating through omnicomplete option list
 " See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
