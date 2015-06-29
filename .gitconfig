@@ -5,11 +5,11 @@
 [color]
   ui = true
 
-[log]
-  decorate = full
-
 [push]
   default = tracking
+
+[log]
+  decorate = full
 
 [alias]
   tree = log --abbrev-commit --pretty=oneline --graph --all

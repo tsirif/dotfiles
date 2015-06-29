@@ -250,7 +250,7 @@ let g:syntastic_style_warning_symbol = '≈'
 map <C-n> :NERDTreeToggle<CR>
 
 "****************************  NERDCommenter SETTINGS  *************************
-" leave sapce after comment
+" leave space after comment
 let g:NERDSpaceDelims = 1
 
 "****************************  TagBar SETTINGS  ********************************
