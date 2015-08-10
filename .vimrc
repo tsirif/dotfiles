@@ -47,8 +47,8 @@ filetype plugin indent on
 syntax on
 syntax enable
 
-" enable pathogen
-execute pathogen#infect()
+" Enable doxygen documentation highlighting
+let g:load_doxygen_syntax=1
 
 
 " DISPLAY SETTINGS
@@ -89,6 +89,7 @@ set noshowmode " don't show the mode ("-- INSERT --") at the bottom
 
 set nowrap " Don't automatically wrap on load
 set fo-=t " Don't automatically wrap text when typing
+
 
 " MISC SETTINGS
 set foldlevelstart=99 " all folds open by default
@@ -161,6 +162,39 @@ autocmd BufNewFile,BufRead *.launch set filetype=xml
 " avr IDE
 autocmd BufNewFile,BufRead *.asm set filetype=avr8bit
 autocmd BufNewFile,BufRead *.asm setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
+
+"**************************  VUNDLE SETTINGS  **********************************
+" Things required for vundle setup
+set nocompatible
+filetype off
+set runtimepath+=~/.vim/bundle/vundle
+call vundle#rc()
+
+" VIM BUNDLE PLUGINS
+Bundle 'gmarik/vundle' " list Vundle itself as a bundle plugin
+Bundle 'Valloric/MatchTagAlways' " highlighting html/xml pair tags
+Bundle 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
+Bundle 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
+Bundle 'tomasr/molokai' " Molokai theme for vim is fine (too much purple though)
+Bundle 'Shougo/neomru' " Most Recent most-recently-used mechanism (unite dep)
+Bundle 'scrooloose/nerdcommenter' " Easy comments by scrooloose
+Bundle 'scrooloose/nerdtree' " Vim just got a file system explorer
+Bundle 'scrooloose/syntastic' " Static check and linting
+Bundle 'majutsushi/tagbar' " Closest thing to fast class diagrams
+Bundle 'SirVer/ultisnips' " Metacoding in vim
+Bundle 'Shougo/unite' " One plugin to unite them all. Cool utilities
+Bundle 'bling/vim-airline' " Funky bottomline
+Bundle 'ntpeters/vim-better-whitespace' " I don't want whitespaces in my code
+Bundle 'tpope/vim-fugitive' " Git in vim
+Bundle 'nathanaelkane/vim-indent-guides' " Show indentation in non-intrusive way
+Bundle 'taketwo/vim-ros' " Easy catkin file navigation
+Bundle 'mhinz/vim-signify' " Visualizing git diff actually
+Bundle 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
+Bundle 'vim-scripts/vim-startify' " Starting session for vim
+Bundle 'Shougo/vimproc' " alternative vim lang, dep of unite
+Bundle 'Shougo/vimshell' " Get a shell in a vim buffer!
+
 
 "****************************  CUSTOM MAPS  ************************************
 nmap <leader>fef :call Preserve("normal gg=G")<CR> " format all
@@ -244,6 +278,7 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_warning_symbol = '∆'
 let g:syntastic_style_warning_symbol = '≈'
+let g:syntastic_cpp_check_header = 1
 
 "****************************  NERDTree SETTINGS  ******************************
 " toggle NERDTree with Ctrl+n
@@ -260,6 +295,13 @@ nmap <F8> :TagbarToggle<CR>
 "****************************  MatchTagAlways SETTINGS  ************************
 " option for MatchTagAlways
 let g:mta_use_matchparen_group = 1
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \ 'launch' : 1
+    \}
 
 "****************************  Fugitive SETTINGS  ******************************
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -277,7 +319,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 let g:unite_source_grep_command='ack-grep'
 let g:unite_source_grep_default_opts='--no-heading -C4'
 let g:unite_source_grep_recursive_opt=''
-let g:unite_source_history_yank_enable = 1
+let g:unite_source_history_yank_enable=1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
 nmap <leader> [unite]
@@ -301,7 +343,7 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
 let g:ycm_auto_trigger = 1
-let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/homedir/.vim/.ycm_extra_conf.py'
 let g:ycm_filetype_blacklist={'unite': 1}
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
@@ -412,4 +454,4 @@ let g:vimshell_right_prompt='getcwd()'
 let g:vimshell_vimshrc_path='~/.vim/vimshrc'
 nnoremap <leader>cs :VimShell -split<cr>
 nnoremap <leader>cr :VimShellInteractive irb<cr>
-nnoremap <leader>cp :VimShellInteractive python<cr>
+nnoremap <leader>cp :VimShellInteractive ipython<cr>
