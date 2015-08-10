@@ -2,22 +2,22 @@
 " Things required for vundle setup
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " VIM BUNDLE PLUGINS
-Plugin 'gmarik/vundle' " list Vundle itself as a bundle plugin
+Plugin 'VundleVim/Vundle.vim' " list Vundle itself as a bundle plugin
 Plugin 'Valloric/MatchTagAlways' " highlighting html/xml pair tags
 Plugin 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
 Plugin 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
 Plugin 'tomasr/molokai' " Molokai theme for vim is fine (too much purple though)
-Plugin 'Shougo/neomru' " Most Recent most-recently-used mechanism (unite dep)
+Plugin 'Shougo/neomru.vim' " Most Recent most-recently-used mechanism (unite dep)
 Plugin 'scrooloose/nerdcommenter' " Easy comments by scrooloose
 Plugin 'scrooloose/nerdtree' " Vim just got a file system explorer
 Plugin 'scrooloose/syntastic' " Static check and linting
 Plugin 'majutsushi/tagbar' " Closest thing to fast class diagrams
 Plugin 'SirVer/ultisnips' " Metacoding in vim
-Plugin 'Shougo/unite' " One plugin to unite them all. Cool utilities
+Plugin 'Shougo/unite.vim' " One plugin to unite them all. Cool utilities
 Plugin 'bling/vim-airline' " Funky bottomline
 Plugin 'ntpeters/vim-better-whitespace' " I don't want whitespaces in my code
 Plugin 'tpope/vim-fugitive' " Git in vim
@@ -26,8 +26,8 @@ Plugin 'taketwo/vim-ros' " Easy catkin file navigation
 Plugin 'mhinz/vim-signify' " Visualizing git diff actually
 Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
 Plugin 'vim-scripts/vim-startify' " Starting session for vim
-Plugin 'Shougo/vimproc' " alternative vim lang, dep of unite
-Plugin 'Shougo/vimshell' " Get a shell in a vim buffer!
+Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
+Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
 
 call vundle#end()
 " Filetype Indentation Mode
