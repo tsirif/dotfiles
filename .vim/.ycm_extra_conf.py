@@ -31,6 +31,34 @@
 import os
 import ycm_core
 
+def getRosIncludePaths():
+    try:
+        from rospkg import RosPack
+    except ImportError:
+        return []
+    rospack = RosPack()
+
+    workspaces = map(lambda x: x + '/../devel/include', os.path.expandvars('$ROS_PACKAGE_PATH').split(':')[:-2])
+
+    includes = []
+    includes.extend(workspaces)
+    for p in rospack.list():
+        if os.path.exists(rospack.get_path(p) + '/include'):
+            includes.append(rospack.get_path(p) + '/include')
+        if os.path.exists('/opt/ros/indigo/include'):
+            includes.append('/opt/ros/indigo/include')
+        if os.path.exists('/opt/ros/hydro/include'):
+            includes.append('/opt/ros/hydro/include')
+    return includes
+
+def getRosIncludeFlags():
+    includes = getRosIncludePaths()
+    flags = []
+    for include in includes:
+        flags.append('-isystem')
+        flags.append(include)
+    return flags
+
 # These are the compilation flags that will be used in case there's no
 # compilation database set (by default, one is not set).
 # CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.
@@ -86,7 +114,7 @@ flags = [
 '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1',
 '-isystem',
 '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include',
-]
+] + getRosIncludeFlags()
 
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
