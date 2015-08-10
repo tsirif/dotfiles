@@ -1,3 +1,39 @@
+"**************************  VUNDLE SETTINGS  **********************************
+" Things required for vundle setup
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
+
+" VIM BUNDLE PLUGINS
+Plugin 'gmarik/vundle' " list Vundle itself as a bundle plugin
+Plugin 'Valloric/MatchTagAlways' " highlighting html/xml pair tags
+Plugin 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
+Plugin 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
+Plugin 'tomasr/molokai' " Molokai theme for vim is fine (too much purple though)
+Plugin 'Shougo/neomru' " Most Recent most-recently-used mechanism (unite dep)
+Plugin 'scrooloose/nerdcommenter' " Easy comments by scrooloose
+Plugin 'scrooloose/nerdtree' " Vim just got a file system explorer
+Plugin 'scrooloose/syntastic' " Static check and linting
+Plugin 'majutsushi/tagbar' " Closest thing to fast class diagrams
+Plugin 'SirVer/ultisnips' " Metacoding in vim
+Plugin 'Shougo/unite' " One plugin to unite them all. Cool utilities
+Plugin 'bling/vim-airline' " Funky bottomline
+Plugin 'ntpeters/vim-better-whitespace' " I don't want whitespaces in my code
+Plugin 'tpope/vim-fugitive' " Git in vim
+Plugin 'nathanaelkane/vim-indent-guides' " Show indentation in non-intrusive way
+Plugin 'taketwo/vim-ros' " Easy catkin file navigation
+Plugin 'mhinz/vim-signify' " Visualizing git diff actually
+Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
+Plugin 'vim-scripts/vim-startify' " Starting session for vim
+Plugin 'Shougo/vimproc' " alternative vim lang, dep of unite
+Plugin 'Shougo/vimshell' " Get a shell in a vim buffer!
+
+call vundle#end()
+" Filetype Indentation Mode
+filetype plugin indent on
+
+
 "****************************  GENERAL SETTINGS  *******************************
 " PROGRAM SETTINGS
 " Instead of failing a command because of unsaved changes, instead raise
@@ -39,9 +75,6 @@ set switchbuf=useopen,usetab
 
 " set vim to 256 colors to work with terminals
 set t_Co=256
-
-" Filetype Indentation Mode
-filetype plugin indent on
 
 " Enable syntax highlighting
 syntax on
@@ -162,38 +195,6 @@ autocmd BufNewFile,BufRead *.launch set filetype=xml
 " avr IDE
 autocmd BufNewFile,BufRead *.asm set filetype=avr8bit
 autocmd BufNewFile,BufRead *.asm setlocal tabstop=4 shiftwidth=4 softtabstop=4
-
-
-"**************************  VUNDLE SETTINGS  **********************************
-" Things required for vundle setup
-set nocompatible
-filetype off
-set runtimepath+=~/.vim/bundle/vundle
-call vundle#rc()
-
-" VIM BUNDLE PLUGINS
-Bundle 'gmarik/vundle' " list Vundle itself as a bundle plugin
-Bundle 'Valloric/MatchTagAlways' " highlighting html/xml pair tags
-Bundle 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
-Bundle 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
-Bundle 'tomasr/molokai' " Molokai theme for vim is fine (too much purple though)
-Bundle 'Shougo/neomru' " Most Recent most-recently-used mechanism (unite dep)
-Bundle 'scrooloose/nerdcommenter' " Easy comments by scrooloose
-Bundle 'scrooloose/nerdtree' " Vim just got a file system explorer
-Bundle 'scrooloose/syntastic' " Static check and linting
-Bundle 'majutsushi/tagbar' " Closest thing to fast class diagrams
-Bundle 'SirVer/ultisnips' " Metacoding in vim
-Bundle 'Shougo/unite' " One plugin to unite them all. Cool utilities
-Bundle 'bling/vim-airline' " Funky bottomline
-Bundle 'ntpeters/vim-better-whitespace' " I don't want whitespaces in my code
-Bundle 'tpope/vim-fugitive' " Git in vim
-Bundle 'nathanaelkane/vim-indent-guides' " Show indentation in non-intrusive way
-Bundle 'taketwo/vim-ros' " Easy catkin file navigation
-Bundle 'mhinz/vim-signify' " Visualizing git diff actually
-Bundle 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
-Bundle 'vim-scripts/vim-startify' " Starting session for vim
-Bundle 'Shougo/vimproc' " alternative vim lang, dep of unite
-Bundle 'Shougo/vimshell' " Get a shell in a vim buffer!
 
 
 "****************************  CUSTOM MAPS  ************************************
