@@ -28,6 +28,7 @@ Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standard
 Plugin 'vim-scripts/vim-startify' " Starting session for vim
 Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
 Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
+Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
 
 call vundle#end()
 " Filetype Indentation Mode
@@ -370,9 +371,6 @@ endfunction
 inoremap <silent> <F12> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 nnoremap <silent> <F12> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
-"***************************  Sneak SETTINGS  **********************************
-let g:sneak#streak = 1
-
 "****************************  Python IDE Setup  *******************************
 " Use pylint, should be installed
 let g:syntastic_python_checkers = ['pylint', 'pep8', 'flake8']
@@ -430,7 +428,7 @@ let g:airline#extensions#tabline#left_sep=' '
 let g:airline#extensions#tabline#left_alt_sep='¦'
 " change default font for gvim to enable powerline symbols
 if has('gui_running')
-  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 endif
 
 "****************************  vim colorscheme themes  *************************
@@ -456,3 +454,7 @@ let g:vimshell_vimshrc_path='~/.vim/vimshrc'
 nnoremap <leader>cs :VimShell -split<cr>
 nnoremap <leader>cr :VimShellInteractive irb<cr>
 nnoremap <leader>cp :VimShellInteractive ipython<cr>
+
+"***************************  VimDevIcons SETTINGS  ****************************
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
