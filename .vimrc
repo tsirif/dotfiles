@@ -11,6 +11,7 @@ Plugin 'Valloric/MatchTagAlways' " highlighting html/xml pair tags
 Plugin 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
 Plugin 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
 Plugin 'tomasr/molokai' " Molokai theme for vim is fine (too much purple though)
+Plugin 'zeis/vim-kolor' " Vim is better with kolor's colors
 Plugin 'Shougo/neomru.vim' " Most Recent most-recently-used mechanism (unite dep)
 Plugin 'scrooloose/nerdcommenter' " Easy comments by scrooloose
 Plugin 'scrooloose/nerdtree' " Vim just got a file system explorer
@@ -19,6 +20,7 @@ Plugin 'majutsushi/tagbar' " Closest thing to fast class diagrams
 Plugin 'SirVer/ultisnips' " Metacoding in vim
 Plugin 'Shougo/unite.vim' " One plugin to unite them all. Cool utilities
 Plugin 'bling/vim-airline' " Funky bottomline
+Plugin 'edkolev/tmuxline.vim' " Funky bottomline everywhere!
 Plugin 'ntpeters/vim-better-whitespace' " I don't want whitespaces in my code
 Plugin 'tpope/vim-fugitive' " Git in vim
 Plugin 'nathanaelkane/vim-indent-guides' " Show indentation in non-intrusive way
@@ -29,6 +31,7 @@ Plugin 'vim-scripts/vim-startify' " Starting session for vim
 Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
 Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
 Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
+Plugin 'lervag/vimtex' " Help commands for latex
 
 call vundle#end()
 " Filetype Indentation Mode
@@ -83,6 +86,18 @@ syntax enable
 
 " Enable doxygen documentation highlighting
 let g:load_doxygen_syntax=1
+
+" Make Vim recognize XTerm escape sequences for Page and Arrow
+" " keys combined with modifiers such as Shift, Control, and Alt.
+" " See http://www.reddit.com/r/vim/comments/1a29vk/_/c8tze8p
+if &term =~ '^screen'
+  execute "set t_kP=\e[5;*~"
+  execute "set t_kN=\e[6;*~"
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+endif
 
 
 " DISPLAY SETTINGS
@@ -432,9 +447,8 @@ if has('gui_running')
 endif
 
 "****************************  vim colorscheme themes  *************************
-"let g:solarized_termcolors=256
-"colorscheme solarized
-colorscheme molokai
+" colorscheme molokai
+colorscheme kolor
 
 "****************************  IndentGuides SETTINGS  **************************
 " change default indent color for IndentGuides
