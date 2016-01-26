@@ -16,8 +16,11 @@ Plugin 'Shougo/neomru.vim' " Most Recent most-recently-used mechanism (unite dep
 Plugin 'scrooloose/nerdcommenter' " Easy comments by scrooloose
 Plugin 'scrooloose/nerdtree' " Vim just got a file system explorer
 Plugin 'scrooloose/syntastic' " Static check and linting
+Plugin 'Xuyuanp/nerdtree-git-plugin' " Git status in nerd tree. Cool
 Plugin 'majutsushi/tagbar' " Closest thing to fast class diagrams
 Plugin 'SirVer/ultisnips' " Metacoding in vim
+Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
+Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
 Plugin 'Shougo/unite.vim' " One plugin to unite them all. Cool utilities
 Plugin 'bling/vim-airline' " Funky bottomline
 Plugin 'edkolev/tmuxline.vim' " Funky bottomline everywhere!
@@ -28,8 +31,6 @@ Plugin 'taketwo/vim-ros' " Easy catkin file navigation
 Plugin 'mhinz/vim-signify' " Visualizing git diff actually
 Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
 Plugin 'vim-scripts/vim-startify' " Starting session for vim
-Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
-Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
 Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
 Plugin 'lervag/vimtex' " Help commands for latex
 
@@ -211,6 +212,8 @@ autocmd BufNewFile,BufRead *.launch set filetype=xml
 " avr IDE
 autocmd BufNewFile,BufRead *.asm set filetype=avr8bit
 autocmd BufNewFile,BufRead *.asm setlocal tabstop=4 shiftwidth=4 softtabstop=4
+" sql
+autocmd BufNewFile,BufRead *.sql setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
 
 "****************************  CUSTOM MAPS  ************************************
@@ -261,8 +264,10 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Move to the end of line
 nnoremap <leader>' $
+vnoremap <leader>' $
 " Move to the start of line
 nnoremap <leader>a ^
+vnoremap <leader>a ^
 
 " Clean all whitespace and save
 map <Leader>ws :StripWhitespace<CR>:w<CR>
@@ -272,15 +277,19 @@ map <leader>tn <Esc> :tabnew<CR>
 map <leader>tc <Esc> :tabclose<CR>
 
 " remap arrow keys
-nnoremap <c-up> <Esc> :bprev<CR>
-nnoremap <c-down> <Esc> :bnext<CR>
-nnoremap <c-right> <Esc> :tabnext<CR>
-nnoremap <c-left> <Esc> :tabprev<CR>
+map <c-up> <Esc> :bprev<CR>
+map <c-down> <Esc> :bnext<CR>
+map <c-right> <Esc> :tabnext<CR>
+map <c-left> <Esc> :tabprev<CR>
 
 " Bind Ctrl+<movement> keys to move around the windows,
 " instead of using Ctrl+w + <movement>
-nnoremap <s-right> <Esc><c-w>l
-nnoremap <s-left> <Esc><c-w>h
+map <s-right> <Esc><c-w>l
+map <s-left> <Esc><c-w>h
+
+" Move half page up/down
+nnoremap <space> <Esc><c-f>
+nnoremap <c-space> <Esc><c-b>
 
 
 "****************************  PLUGIN SETTINGS  ********************************
@@ -300,6 +309,20 @@ let g:syntastic_cpp_check_header = 1
 "****************************  NERDTree SETTINGS  ******************************
 " toggle NERDTree with Ctrl+n
 map <C-n> :NERDTreeToggle<CR>
+
+"***************************  NERDTreeGit SETTINGS  ****************************
+" custon configuration for icons
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
 
 "****************************  NERDCommenter SETTINGS  *************************
 " leave space after comment
@@ -333,8 +356,8 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 "****************************  Unite SETTINGS  *********************************
 " should install ack-grep
-let g:unite_source_grep_command='ack-grep'
-let g:unite_source_grep_default_opts='--no-heading -C4'
+let g:unite_source_grep_command='ack'
+let g:unite_source_grep_default_opts='--noheading -C4'
 let g:unite_source_grep_recursive_opt=''
 let g:unite_source_history_yank_enable=1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -471,4 +494,3 @@ nnoremap <leader>cp :VimShellInteractive ipython<cr>
 
 "***************************  VimDevIcons SETTINGS  ****************************
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:DevIconsEnableFoldersOpenClose = 1
