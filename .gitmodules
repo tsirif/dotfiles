@@ -1,3 +1,6 @@
 [submodule ".vim/bundle/Vundle.vim"]
 	path = .vim/bundle/Vundle.vim
 	url = git@github.com:VundleVim/Vundle.vim.git
+[submodule ".vim/ycm_conf"]
+	path = .vim/ycm_conf
+	url = git@gist.github.com:92a2d05dd772778f86f2.git

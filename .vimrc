@@ -383,7 +383,7 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
 let g:ycm_auto_trigger = 1
-let g:ycm_global_ycm_extra_conf='~/homedir/.vim/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/homedir/.vim/ycm_conf/.ycm_extra_conf.py'
 let g:ycm_filetype_blacklist={'unite': 1}
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
