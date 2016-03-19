@@ -387,6 +387,10 @@ let g:ycm_global_ycm_extra_conf='~/homedir/.vim/.ycm_extra_conf.py'
 let g:ycm_filetype_blacklist={'unite': 1}
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
+let g:ycm_semantic_triggers = {
+\   'roslaunch' : ['="', '$(', '/'],
+\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
+\ }
 
 "****************************  UltiSnips SETTINGS  *****************************
 "" Trigger configuration.
