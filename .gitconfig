@@ -12,4 +12,5 @@
   decorate = full
 
 [alias]
-  tree = log --abbrev-commit --pretty=oneline --graph --all
+  gtree = log --abbrev-commit --pretty=oneline --graph --all
+  tree = log --abbrev-commit --pretty=oneline --graph

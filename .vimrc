@@ -22,7 +22,8 @@ Plugin 'SirVer/ultisnips' " Metacoding in vim
 Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
 Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
 Plugin 'Shougo/unite.vim' " One plugin to unite them all. Cool utilities
-Plugin 'bling/vim-airline' " Funky bottomline
+Plugin 'vim-airline/vim-airline' " Funky bottomline and theming
+Plugin 'vim-airline/vim-airline-themes' " Theeeeemes
 Plugin 'edkolev/tmuxline.vim' " Funky bottomline everywhere!
 Plugin 'ntpeters/vim-better-whitespace' " I don't want whitespaces in my code
 Plugin 'tpope/vim-fugitive' " Git in vim
@@ -32,7 +33,8 @@ Plugin 'mhinz/vim-signify' " Visualizing git diff actually
 Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
 Plugin 'vim-scripts/vim-startify' " Starting session for vim
 Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
-Plugin 'lervag/vimtex' " Help commands for latex
+Plugin 'LaTeX-Box-Team/LaTeX-Box' " Latex helper
+Plugin 'rhysd/vim-clang-format' " Easily lint C, C++, ObjC code
 
 call vundle#end()
 " Filetype Indentation Mode
@@ -86,8 +88,10 @@ syntax on
 syntax enable
 
 " Enable doxygen documentation highlighting
-let g:load_doxygen_syntax=1
+" let g:load_doxygen_syntax=1
+let g:load_sphinx_syntax=1
 
+" TMUX INTEGRATION SETTINGS
 " Make Vim recognize XTerm escape sequences for Page and Arrow
 " " keys combined with modifiers such as Shift, Control, and Alt.
 " " See http://www.reddit.com/r/vim/comments/1a29vk/_/c8tze8p
@@ -98,6 +102,81 @@ if &term =~ '^screen'
   execute "set <xDown>=\e[1;*B"
   execute "set <xRight>=\e[1;*C"
   execute "set <xLeft>=\e[1;*D"
+endif
+
+" for mouse to work properly when using tmux
+set ttymouse=xterm2
+
+if $TMUX != ''
+  " integrate movement between tmux/vim panes/windows
+
+  fun! TmuxMove(direction)
+    " Check if we are currently focusing on a edge window.
+    " To achieve that,  move to/from the requested window and
+    " see if the window number changed
+    let oldw = winnr()
+    silent! exe 'wincmd ' . a:direction
+    let neww = winnr()
+    silent! exe oldw . 'wincmd'
+    if oldw == neww
+      " The focused window is at an edge, so ask tmux to switch panes
+      if a:direction == 'j'
+        call system("tmux select-pane -D")
+      elseif a:direction == 'k'
+        call system("tmux select-pane -U")
+      elseif a:direction == 'h'
+        call system("tmux select-pane -L")
+      elseif a:direction == 'l'
+        call system("tmux select-pane -R")
+      endif
+    else
+      exe 'wincmd ' . a:direction
+    end
+  endfun
+
+  function! TmuxSharedYank()
+    " Send the contents of the 't' register to a temporary file, invoke
+    " copy to tmux using load-buffer, and then to xclip
+    " FIXME for some reason, the 'tmux load-buffer -' form will hang
+    " when used with 'system()' which takes a second argument as stdin.
+    let tmpfile = tempname()
+    call writefile(split(@t, '\n'), tmpfile, 'b')
+    call system('tmux load-buffer '.shellescape(tmpfile).';tmux show-buffer | xclip -i -selection clipboard')
+    call delete(tmpfile)
+  endfunction
+
+  function! TmuxSharedPaste()
+    " put tmux copy buffer into the t register, the mapping will handle
+    " pasting into the buffer
+    let @t = system('xclip -o -selection clipboard | tmux load-buffer -;tmux show-buffer')
+  endfunction
+
+
+  nnoremap <silent> <c-w>j :silent call TmuxMove('j')<cr>
+  nnoremap <silent> <c-w>k :silent call TmuxMove('k')<cr>
+  nnoremap <silent> <c-w>h :silent call TmuxMove('h')<cr>
+  nnoremap <silent> <c-w>l :silent call TmuxMove('l')<cr>
+  nnoremap <silent> <c-w><down> :silent call TmuxMove('j')<cr>
+  nnoremap <silent> <c-w><up> :silent call TmuxMove('k')<cr>
+  nnoremap <silent> <c-w><left> :silent call TmuxMove('h')<cr>
+  nnoremap <silent> <c-w><right> :silent call TmuxMove('l')<cr>
+
+  vnoremap <silent> <esc>y "ty:call TmuxSharedYank()<cr>
+  vnoremap <silent> <esc>d "td:call TmuxSharedYank()<cr>
+  nnoremap <silent> <esc>p :call TmuxSharedPaste()<cr>"tp
+  vnoremap <silent> <esc>p d:call TmuxSharedPaste()<cr>h"tp
+  set clipboard= " Use this or vim will automatically put deleted text into x11 selection('*' register) which breaks the above map
+
+  " Quickly send text to a pane using f6
+  nnoremap <silent> <f6> :SlimuxREPLSendLine<cr>
+  inoremap <silent> <f6> <esc>:SlimuxREPLSendLine<cr>i " Doesn't break out of insert
+  vnoremap <silent> <f6> :SlimuxREPLSendSelection<cr>
+
+  " Quickly restart your debugger/console/webserver. Eg: if you are developing a node.js web app
+  " in the 'serve.js' file you can quickly restart the server with this mapping:
+  nnoremap <silent> <f5> :call SlimuxSendKeys('C-C " node serve.js" Enter')<cr>
+  " pay attention to the space before 'node', this is actually required as send-keys will eat the first key
+
 endif
 
 
@@ -177,9 +256,9 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 " enforces a specified line-length and auto inserts hard line breaks when we
 " reach the limit; in Normal mode, you can reformat the current paragraph with
 " gqap.
-set textwidth=80
+set textwidth=85
 "this makes the color after the textwidth column highlighted
-set colorcolumn=81
+set colorcolumn=86
 highlight ColorColumn ctermbg=233
 
 
@@ -201,10 +280,22 @@ endif
 
 
 " SPELLCHECKING SETTINGS
+set spelllang=en_us,el
+" set spellfile=$HOME/.vim/spell/en.utf-8.spl,$HOME/.vim/spell/el.utf-8.spl
 " set spell checking for certain filetypes
 autocmd BufRead,BufNewFile *.md setlocal spell
 autocmd FileType gitcommit setlocal spell
+autocmd BufRead,BufNewFile *.tex setlocal spell
 
+" Change wrong spelling highlight color to be more readable (218 = pink)
+" highlight SpellBad ctermbg=218
+"
+" greek language input - toggle with C-^
+set keymap=greek_utf-8
+set iminsert=0
+set imsearch=-1
+" <F2> also toggles
+inoremap <F2> <C-^>
 
 " FILETYPES SETTINGS
 " add custom filetypes
@@ -241,8 +332,9 @@ nnoremap Q gqap
 noremap <leader>q :qa<cr>
 
 " Toggle and untoggle spell checking
-noremap <leader>se :setlocal spell! spelllang=en_us<cr>
-noremap <leader>sg :setlocal spell! spelllang=el<cr>
+noremap <leader>sl :setlocal spell!<CR>
+noremap <leader>se :setlocal spell! spelllang=en_us<CR>
+noremap <leader>sg :setlocal spell! spelllang=el<CR>
 " spelling shortcuts using <leader>
 " ]s next misspelled word
 " [s previous misspelled word
@@ -270,7 +362,7 @@ nnoremap <leader>a ^
 vnoremap <leader>a ^
 
 " Clean all whitespace and save
-map <Leader>ws :StripWhitespace<CR>:w<CR>
+map <Leader>ws :%s/\s\+$//<CR>:w<CR>
 
 " New/close tab shortcut
 map <leader>tn <Esc> :tabnew<CR>
@@ -297,6 +389,7 @@ nnoremap <c-space> <Esc><c-b>
 let g:startify_session_dir = "/home/tsirif/.vim-sessions"
 let g:startify_change_to_vcs_root = 1
 let g:startify_show_sessions = 1
+let g:startify_bookmarks = [ '~/.vimrc', '~/.zshrc', '~/.tmux.conf' ]
 nnoremap <F1> :Startify<cr>
 
 "****************************  Syntastic SETTINGS  *****************************
@@ -305,6 +398,7 @@ let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_warning_symbol = '∆'
 let g:syntastic_style_warning_symbol = '≈'
 let g:syntastic_cpp_check_header = 1
+let g:syntastic_tex_chktex_args = "-n19"
 
 "****************************  NERDTree SETTINGS  ******************************
 " toggle NERDTree with Ctrl+n
@@ -356,11 +450,18 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 "****************************  Unite SETTINGS  *********************************
 " should install ack-grep
-let g:unite_source_grep_command='ack'
-let g:unite_source_grep_default_opts='--noheading -C4'
-let g:unite_source_grep_recursive_opt=''
+if executable('ag')
+  " Use ag (the silver searcher)
+  " https://github.com/ggreer/the_silver_searcher
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts =
+  \ '-i --vimgrep --hidden --ignore ' .
+  \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+  let g:unite_source_grep_recursive_opt = ''
+end
 let g:unite_source_history_yank_enable=1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
 
 nmap <leader> [unite]
 nnoremap [unite] <nop>
@@ -373,17 +474,17 @@ nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
 nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
 nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 nnoremap <C-p> :Unite file_rec/async<cr>
 
-"****************************  YouCompleteMe SETTINGS  *************************
+"****************************  YouCompleteMe (YCM) SETTINGS  ************************
+let g:ycm_path_to_python_interpreter="/usr/bin/python"
 let g:ycm_complete_in_comments_and_strings=1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
-let g:ycm_auto_trigger = 1
-let g:ycm_global_ycm_extra_conf='~/homedir/.vim/ycm_conf/.ycm_extra_conf.py'
+let g:ycm_auto_trigger=1
+let g:ycm_global_ycm_extra_conf='~/homedir/.vim/.ycm_extra_conf.py'
 let g:ycm_filetype_blacklist={'unite': 1}
 "Configure Eclim and YCM integration
 let g:EclimCompletionMethod = 'omnifunc'
@@ -392,7 +493,7 @@ let g:ycm_semantic_triggers = {
 \   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
 \ }
 
-"****************************  UltiSnips SETTINGS  *****************************
+"****************************  UltiSnips SETTINGS  **********************************
 "" Trigger configuration.
 "" Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-j>"
@@ -402,7 +503,7 @@ let g:UltiSnipsListSnippets="<c-`>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "private-snippets"]
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-let g:ultisnips_python_style="doxygen"
+let g:ultisnips_python_style="sphinx"
 
 " Unite - UltiSnips Integration
 function! UltiSnipsCallUnite()
@@ -414,9 +515,11 @@ inoremap <silent> <F12> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsC
 nnoremap <silent> <F12> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 "****************************  Python IDE Setup  *******************************
-" Use pylint, should be installed
-let g:syntastic_python_checkers = ['pylint', 'pep8', 'flake8']
-let g:syntastic_python_python_exec = '/usr/bin/python2'
+" Use {pep8, pylint, pyflakes or flake8}
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_python_exec = '/usr/bin/python'
+" let g:syntastic_quiet_messages = { "level" : "warnings" }
+let g:syntastic_python_flake8_args = '--ignore=E501,E123,E133,FI12,FI14,FI15,FI50,FI51,FI53'
 
 " Configure Eclim and Syntastic integration for python
 let g:EclimPythonValidate = 0
@@ -473,19 +576,22 @@ if has('gui_running')
   set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 endif
 
-"****************************  vim colorscheme themes  *************************
-" colorscheme molokai
-colorscheme kolor
-
 "****************************  IndentGuides SETTINGS  **************************
 " change default indent color for IndentGuides
-let g:indent_guides_start_level=1
-let g:indent_guides_guide_size=1
+let g:indent_guides_start_level=2
+" let g:indent_guides_guide_size=1
 let g:indent_guides_enable_on_vim_startup=0
-let g:indent_guides_color_change_percent=3
+let g:indent_guides_color_change_percent=20
+let g:indent_guides_auto_colors=0
+" autocmd VimEnter,ColorScheme * highlight IndentGuidesOdd  ctermbg=2
+autocmd VimEnter,ColorScheme * highlight IndentGuidesEven ctermbg=237
 
 " toggle indentGuides with <F7>
 nmap <F7> <ESC>:IndentGuidesToggle<CR>
+
+"****************************  vim colorscheme themes  *************************
+" colorscheme molokai
+colorscheme kolor
 
 "****************************  VimShell SETTINGS  ******************************
 let g:vimshell_editor_command='vim'
@@ -498,3 +604,22 @@ nnoremap <leader>cp :VimShellInteractive ipython<cr>
 
 "***************************  VimDevIcons SETTINGS  ****************************
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+
+"***************************  clangFormat SETTINGS  ****************************
+let g:clang_format#code_style = "google"
+let g:clang_format#style_options = {
+      \ "ConstructorInitializerIndentWidth" : 2,
+      \ "ColumnLimit" : 100,
+      \ "BreakBeforeBraces" : "Stroustrup",
+      \ "AccessModifierOffset" : -4,
+      \ "AlwaysBreakTemplateDeclarations" : "true",
+      \ "Standard" : "C++11"}
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,cxx,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,cxx,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+"***************************  Latex-Box SETTINGS  ******************************
+let g:LatexBox_latexmk_async = 0
+let g:LatexBox_build_dir = "build"
+let g:LatexBox_quickfix = 3
