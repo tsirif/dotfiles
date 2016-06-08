@@ -35,6 +35,7 @@ Plugin 'vim-scripts/vim-startify' " Starting session for vim
 Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
 Plugin 'LaTeX-Box-Team/LaTeX-Box' " Latex helper
 Plugin 'rhysd/vim-clang-format' " Easily lint C, C++, ObjC code
+Plugin 'Firef0x/PKGBUILD.vim' " Make my AUR life easy
 
 call vundle#end()
 " Filetype Indentation Mode
@@ -305,6 +306,8 @@ autocmd BufNewFile,BufRead *.asm set filetype=avr8bit
 autocmd BufNewFile,BufRead *.asm setlocal tabstop=4 shiftwidth=4 softtabstop=4
 " sql
 autocmd BufNewFile,BufRead *.sql setlocal tabstop=4 shiftwidth=4 softtabstop=4
+" pkgbuild
+autocmd BufNewFile,BufRead *.pb set filetype=PKGBUILD
 
 
 "****************************  CUSTOM MAPS  ************************************
@@ -503,7 +506,7 @@ let g:UltiSnipsListSnippets="<c-`>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "private-snippets"]
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-let g:ultisnips_python_style="sphinx"
+let g:ultisnips_python_style="numpy"
 
 " Unite - UltiSnips Integration
 function! UltiSnipsCallUnite()

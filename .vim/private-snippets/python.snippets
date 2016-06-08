@@ -47,3 +47,62 @@ __email__ = "${3:tsirif@gmail.com}"
 
 ${0}
 endsnippet
+
+snippet codejam "template for sport programming contests" b
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Submission for problem ${1:A}: ${2:Rank And File}
+of ${3:Google CodeJam 2016}
+
+Author: Christos Tsirigotis <tsirif@gmail.com>
+Date: `!p import time; snip.rv += time.strftime("%B %d, %Y")`
+"""
+
+
+from __future__ import absolute_import, print_function, division
+# from six import range, map, reduce, filter, zip, input
+import itertools as itools
+from itertools import compress as cmpr
+from itertools import product as prd
+from itertools import permutations as perm
+from itertools import combinations as comb
+from itertools import combinations_with_replacement as combr
+from fractions import gcd
+from collections import defaultdict as dd
+from collections import deque as dq
+import numpy as np
+from numpy import pi
+bc = lambda n: bc((n - 1) & n) + 1 if n else 0
+MOD = 1000002013
+EPS = 1e-8
+
+OUTCASE = "Case #%(nc)s:"
+outlist = lambda x, y: print(x + ' ' + ' '.join(map(str, y)))
+outnum = lambda x, y: print(x + ' ' + str(y))
+
+
+def solve():
+	T = int(input())
+	for nc in range(1, T + 1):
+		# input
+		${4:A = list(map(int, input().split()))}
+		# TODO things
+		${0:# ...}
+		# output
+		${5:B = []}
+		# print
+		outcase = OUTCASE % locals()
+		${6:outlist(outcase, B)}
+
+solve()
+endsnippet
+
+# outlist
+# outnum
+# inlist
+# innum
+# fori
+# DFS
+# BFS
