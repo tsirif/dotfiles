@@ -8,8 +8,8 @@ call vundle#begin()
 " VIM BUNDLE PLUGINS
 Plugin 'VundleVim/Vundle.vim' " list Vundle itself as a bundle plugin
 Plugin 'Valloric/MatchTagAlways' " highlighting html/xml pair tags
-Plugin 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
-Plugin 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
+" Plugin 'Valloric/YouCompleteMe' " Valloric's masterpiece for vim autocompletion
+" Plugin 'davidhalter/jedi-vim' " But i want jedi-vim's features too for python
 Plugin 'tomasr/molokai' " Molokai theme for vim is fine (too much purple though)
 Plugin 'zeis/vim-kolor' " Vim is better with kolor's colors
 Plugin 'Shougo/neomru.vim' " Most Recent most-recently-used mechanism (unite dep)
@@ -20,7 +20,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin' " Git status in nerd tree. Cool
 Plugin 'majutsushi/tagbar' " Closest thing to fast class diagrams
 Plugin 'SirVer/ultisnips' " Metacoding in vim
 Plugin 'Shougo/vimproc.vim' " alternative vim lang, dep of unite
-Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
+" Plugin 'Shougo/vimshell.vim' " Get a shell in a vim buffer!
 Plugin 'Shougo/unite.vim' " One plugin to unite them all. Cool utilities
 Plugin 'vim-airline/vim-airline' " Funky bottomline and theming
 Plugin 'vim-airline/vim-airline-themes' " Theeeeemes
@@ -33,9 +33,9 @@ Plugin 'mhinz/vim-signify' " Visualizing git diff actually
 Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
 Plugin 'vim-scripts/vim-startify' " Starting session for vim
 " Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
-Plugin 'LaTeX-Box-Team/LaTeX-Box' " Latex helper
+" Plugin 'LaTeX-Box-Team/LaTeX-Box' " Latex helper
 Plugin 'rhysd/vim-clang-format' " Easily lint C, C++, ObjC code
-Plugin 'Firef0x/PKGBUILD.vim' " Make my AUR life easy
+" Plugin 'Firef0x/PKGBUILD.vim' " Make my AUR life easy
 
 call vundle#end()
 " Filetype Indentation Mode
