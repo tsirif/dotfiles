@@ -48,5 +48,41 @@ snippet pandora "license for pandora code" b
 ${0}
 endsnippet
 
+snippet printtools "Set of macros useful for debugging info"
+#include <stdio.h>
+#define PRINTV(ar, N, t)           \
+  do {                             \
+    printf("%s\n", STR(ar));       \
+    int li;                        \
+    for (li = 0; li < (N); ++li) { \
+      printf(STR(t) " ", ar[li]);  \
+    }                              \
+    printf("\n");                  \
+    printf("\n");                  \
+  } while (0)
+#define PRINTVF(ar, N) PRINTV(ar, N, % f)
+#define PRINTVI(ar, N) PRINTV(ar, N, % d)
+
+#define PRINTM(ar, rows, cols, t)     \
+  do {                                \
+    printf("%s\n", STR(ar));          \
+    int i, j;                         \
+    for (i = 0; i < (rows); ++i) {    \
+      for (j = 0; j < (cols); ++j) {  \
+        printf(STR(t) " ", ar[i][j]); \
+      }                               \
+      printf("\n");                   \
+    }                                 \
+    printf("\n");                     \
+  } while (0)
+#define PRINTMF(ar, rows, cols) PRINTV(ar, rows, cols, % f)
+#define PRINTMI(ar, rows, cols) PRINTV(ar, rows, cols, % d)
+
+#define PRINT(x, t) printf("%s: " STR(t) "\n", STR(x), x)
+#define PRINTF(x) PRINT(x, % f)
+#define PRINTI(x) PRINT(x, % d)
+
+#define PRINTLN printf("\n")
+endsnippet
 
 # vim:ft=snippets:
