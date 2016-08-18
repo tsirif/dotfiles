@@ -60,8 +60,10 @@ snippet printtools "Set of macros useful for debugging info"
     printf("\n");                  \
     printf("\n");                  \
   } while (0)
-#define PRINTVF(ar, N) PRINTV(ar, N, % f)
-#define PRINTVI(ar, N) PRINTV(ar, N, % d)
+#define PRINTVF(ar, N) PRINTV(ar, N, %.2f)
+#define PRINTVI(ar, N) PRINTV(ar, N, %i)
+#define PRINTVL(ar, N) PRINTV(ar, N, %li)
+#define PRINTVUL(ar, N) PRINTV(ar, N, %lu)
 
 #define PRINTM(ar, rows, cols, t)     \
   do {                                \
@@ -75,12 +77,16 @@ snippet printtools "Set of macros useful for debugging info"
     }                                 \
     printf("\n");                     \
   } while (0)
-#define PRINTMF(ar, rows, cols) PRINTV(ar, rows, cols, % f)
-#define PRINTMI(ar, rows, cols) PRINTV(ar, rows, cols, % d)
+#define PRINTMF(ar, rows, cols) PRINTM(ar, rows, cols, %.2f)
+#define PRINTMI(ar, rows, cols) PRINTM(ar, rows, cols, %i)
+#define PRINTML(ar, rows, cols) PRINTM(ar, rows, cols, %li)
+#define PRINTMUL(ar, rows, cols) PRINTM(ar, rows, cols, %lu)
 
 #define PRINT(x, t) printf("%s: " STR(t) "\n", STR(x), x)
-#define PRINTF(x) PRINT(x, % f)
-#define PRINTI(x) PRINT(x, % d)
+#define PRINTF(x) PRINT(x, %.2f)
+#define PRINTI(x) PRINT(x, %i)
+#define PRINTL(x) PRINT(x, %li)
+#define PRINTUL(x) PRINT(x, %lu)
 
 #define PRINTLN printf("\n")
 endsnippet

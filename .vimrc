@@ -32,7 +32,7 @@ Plugin 'taketwo/vim-ros' " Easy catkin file navigation
 Plugin 'mhinz/vim-signify' " Visualizing git diff actually
 Plugin 'tsirif/vim-snippets' " Snippets for ultisnips metacoding (by my standards)
 Plugin 'vim-scripts/vim-startify' " Starting session for vim
-Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
+" Plugin 'ryanoasis/vim-devicons' " Make vim fancier with icons!!!
 Plugin 'LaTeX-Box-Team/LaTeX-Box' " Latex helper
 Plugin 'rhysd/vim-clang-format' " Easily lint C, C++, ObjC code
 Plugin 'Firef0x/PKGBUILD.vim' " Make my AUR life easy
@@ -257,9 +257,9 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 " enforces a specified line-length and auto inserts hard line breaks when we
 " reach the limit; in Normal mode, you can reformat the current paragraph with
 " gqap.
-set textwidth=85
+set textwidth=80
 "this makes the color after the textwidth column highlighted
-set colorcolumn=86
+set colorcolumn=81
 highlight ColorColumn ctermbg=233
 
 
@@ -397,11 +397,20 @@ nnoremap <F1> :Startify<cr>
 
 "****************************  Syntastic SETTINGS  *****************************
 let g:syntastic_error_symbol = '✗'
-let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_warning_symbol = '∆'
+let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_style_warning_symbol = '≈'
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_tex_chktex_args = "-n19"
+let g:syntastic_enable_highlighting = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_always_populate_loc_list = 1
+
+" Use {clang_check, gcc, make}
+let g:syntastic_c_checkers = ['clang_check']
+let g:syntastic_c_check_header = 1
+let g:syntastic_c_auto_refresh_includes = 1
+let g:syntastic_c_compiler = 'clang'
 
 "****************************  NERDTree SETTINGS  ******************************
 " toggle NERDTree with Ctrl+n
@@ -480,12 +489,24 @@ nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mappin
 nnoremap <C-p> :Unite file_rec/async<cr>
 
 "****************************  YouCompleteMe (YCM) SETTINGS  ************************
+let g:ycm_register_as_syntastic_checker = 1
+let g:ycm_show_diagnostics_ui = 1
+
+"will put icons in Vim's gutter on lines that have a diagnostic set.
+"Turning this off will also turn off the YcmErrorLine and YcmWarningLine
+"highlighting
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+let g:ycm_always_populate_location_list = 1 "default 0
+let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
+
 let g:ycm_path_to_python_interpreter="/usr/bin/python"
 let g:ycm_complete_in_comments_and_strings=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
 let g:ycm_key_list_previous_completion=['<s-tab>', '<Up>']
+
 let g:ycm_auto_trigger=1
 let g:ycm_global_ycm_extra_conf='~/homedir/.vim/.ycm_extra_conf.py'
 let g:ycm_filetype_blacklist={'unite': 1}
@@ -518,11 +539,11 @@ inoremap <silent> <F12> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsC
 nnoremap <silent> <F12> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 "****************************  Python IDE Setup  *******************************
-" Use {pep8, pylint, pyflakes or flake8}
-let g:syntastic_python_checkers = ['flake8']
+" Use {pycodestyle, pylint, pyflakes or flake8}
+let g:syntastic_python_checkers = ['pycodestyle']
 let g:syntastic_python_python_exec = '/usr/bin/python'
 " let g:syntastic_quiet_messages = { "level" : "warnings" }
-let g:syntastic_python_flake8_args = '--ignore=E501,E123,E133,FI12,FI14,FI15,FI50,FI51,FI53'
+let g:syntastic_python_pycodestyle_args = '--ignore=E501,E123,E133,FI12,FI14,FI15,FI50,FI51,FI53'
 
 " Configure Eclim and Syntastic integration for python
 let g:EclimPythonValidate = 0
@@ -539,6 +560,8 @@ set wildignore+=*~
 let g:jedi#usages_command = "<leader>z"
 let g:jedi#popup_on_dot = 0
 let g:jedi#popup_select_first = 0
+let g:jedi#show_call_signatures_delay = 0
+let g:jedi#show_call_signatures = "1"
 map <Leader>br Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
 
 " Better navigating through omnicomplete option list
@@ -612,10 +635,14 @@ let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 let g:clang_format#code_style = "google"
 let g:clang_format#style_options = {
       \ "ConstructorInitializerIndentWidth" : 2,
-      \ "ColumnLimit" : 100,
-      \ "BreakBeforeBraces" : "Stroustrup",
+      \ "ColumnLimit" : 80,
+      \ "BreakBeforeBraces" : "Attach",
       \ "AccessModifierOffset" : -4,
       \ "AlwaysBreakTemplateDeclarations" : "true",
+      \ "AllowShortIfStatementsOnASingleLine" : "false",
+      \ "AllowShortCaseLabelsOnASingleLine" : "true",
+      \ "AllowShortLoopsOnASingleLine" : "false",
+      \ "IndentCaseLabels" : "false",
       \ "Standard" : "C++11"}
 
 " map to <Leader>cf in C++ code
