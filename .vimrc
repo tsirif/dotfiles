@@ -383,8 +383,8 @@ map <s-right> <Esc><c-w>l
 map <s-left> <Esc><c-w>h
 
 " Move half page up/down
-nnoremap <space> <Esc><c-f>
-nnoremap <c-space> <Esc><c-b>
+nnoremap <c-j> <Esc><c-d>
+nnoremap <c-k> <Esc><c-u>
 
 
 "****************************  PLUGIN SETTINGS  ********************************
