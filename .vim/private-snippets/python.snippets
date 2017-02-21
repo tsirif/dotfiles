@@ -48,13 +48,13 @@ __email__ = "${3:tsirif@gmail.com}"
 ${0}
 endsnippet
 
-snippet codejam "template for sport programming contests" b
+snippet codejam "template for google programming contests" b
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
 Submission for problem ${1:A}: ${2:Rank And File}
-of ${3:Google CodeJam 2016}
+of Google CodeJam ${3:2016}
 
 Author: Christos Tsirigotis <tsirif@gmail.com>
 Date: `!p import time; snip.rv += time.strftime("%B %d, %Y")`
@@ -62,7 +62,7 @@ Date: `!p import time; snip.rv += time.strftime("%B %d, %Y")`
 
 
 from __future__ import absolute_import, print_function, division
-# from six import range, map, reduce, filter, zip, input
+# from six import range, map, reduce, filter, zip, raw_input
 import itertools as itools
 from itertools import compress as cmpr
 from itertools import product as prd
@@ -83,18 +83,81 @@ outlist = lambda x, y: print(x + ' ' + ' '.join(map(str, y)))
 outnum = lambda x, y: print(x + ' ' + str(y))
 
 
+def out(nc, solution):
+    outcase = OUTCASE % locals()
+    try:
+        float(solution)
+        outnum(outcase, solution)
+    except TypeError:
+        outlist(outcase, solution)
+
+
 def solve():
-	T = int(input())
-	for nc in range(1, T + 1):
-		# input
-		${4:A = list(map(int, input().split()))}
-		# TODO things
-		${0:# ...}
-		# output
-		${5:B = []}
-		# print
-		outcase = OUTCASE % locals()
-		${6:outlist(outcase, B)}
+    T = int(raw_input())  # get number of test cases
+    for nc in range(1, T + 1):
+        # input
+        A = list(map(int, raw_input().split()))  # get list of numbers
+        A = int(raw_input())  # get a number
+        # TODO things
+        # ...
+        # output
+        B = []  # B is a list of numbers
+        B = 0  # B is a number
+        # print
+        out(nc, B)
+
+solve()
+endsnippet
+
+snippet xtreme "template for ieee programming contests" b
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Submission for problem ${1:A}
+of IEEEXtreme${3:-10.0 2016}
+
+Author: ${4:NinjaSolutions}
+Date: `!p import time; snip.rv += time.strftime("%B %d, %Y")`
+"""
+
+
+from __future__ import absolute_import, print_function, division
+import itertools as itools
+from itertools import compress as cmpr
+from itertools import product as prd
+from itertools import permutations as perm
+from itertools import combinations as comb
+from itertools import combinations_with_replacement as combr
+from fractions import gcd
+from collections import defaultdict as dd
+from collections import deque as dq
+bc = lambda n: bc((n - 1) & n) + 1 if n else 0  # bitcount
+MOD = 1000002013  # large prime number
+EPS = 1e-8
+
+
+def out(solution):
+    try:
+        float(solution)
+        print(str(solution))
+    except TypeError:
+				print(' '.join(map(str, solution)))
+
+
+def solve():
+    T = int(input())  # get number of test cases
+    for nc in range(1, T + 1):
+        # input
+        A = list(map(int, input().split()))  # get list of numbers
+        A = int(input())  # get a number
+        # TODO things
+        # ...
+        # output
+        B = []  # B is a list of numbers
+        B = 0  # B is a number
+        # print
+        out(B)
 
 solve()
 endsnippet
