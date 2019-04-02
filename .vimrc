@@ -118,7 +118,7 @@ if $TMUX != ''
     let oldw = winnr()
     silent! exe 'wincmd ' . a:direction
     let neww = winnr()
-    silent! exe oldw . 'wincmd'
+    silent! exe oldw . 'wincmd w'
     if oldw == neww
       " The focused window is at an edge, so ask tmux to switch panes
       if a:direction == 'j'
@@ -287,6 +287,7 @@ set spelllang=en_us,el
 autocmd BufRead,BufNewFile *.md setlocal spell
 autocmd FileType gitcommit setlocal spell
 autocmd BufRead,BufNewFile *.tex setlocal spell
+autocmd BufRead,BufNewFile *.rst setlocal spell
 
 " Change wrong spelling highlight color to be more readable (218 = pink)
 " highlight SpellBad ctermbg=218
@@ -365,7 +366,7 @@ nnoremap <leader>a ^
 vnoremap <leader>a ^
 
 " Clean all whitespace and save
-map <Leader>ws :%s/\s\+$//<CR>:w<CR>
+map <silent> <Leader>ws :%s/\s\+$//<CR>:w<CR>
 
 " New/close tab shortcut
 map <leader>tn <Esc> :tabnew<CR>
@@ -384,7 +385,9 @@ map <s-left> <Esc><c-w>h
 
 " Move half page up/down
 nnoremap <c-j> <Esc><c-d>
+vnoremap <c-j> <c-d>
 nnoremap <c-k> <Esc><c-u>
+vnoremap <c-k> <c-u>
 
 
 "****************************  PLUGIN SETTINGS  ********************************
@@ -461,7 +464,6 @@ nnoremap <silent> <leader>gr :Gremove<CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
 "****************************  Unite SETTINGS  *********************************
-" should install ack-grep
 if executable('ag')
   " Use ag (the silver searcher)
   " https://github.com/ggreer/the_silver_searcher
@@ -501,7 +503,7 @@ let g:ycm_always_populate_location_list = 1 "default 0
 let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
 
 let g:ycm_path_to_python_interpreter="/usr/bin/python"
-let g:ycm_complete_in_comments_and_strings=1
+let g:ycm_complete_in_comments_and_strings=0
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_key_list_select_completion=['<tab>', '<Down>']
@@ -540,10 +542,13 @@ nnoremap <silent> <F12> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnips
 
 "****************************  Python IDE Setup  *******************************
 " Use {pycodestyle, pylint, pyflakes or flake8}
-let g:syntastic_python_checkers = ['pycodestyle']
+let g:syntastic_python_checkers = ['flake8', 'pylint', 'python']
 let g:syntastic_python_python_exec = '/usr/bin/python'
 " let g:syntastic_quiet_messages = { "level" : "warnings" }
-let g:syntastic_python_pycodestyle_args = '--ignore=E501,E123,E133,FI12,FI14,FI15,FI50,FI51,FI53'
+" let g:syntastic_python_flake8_post_args = '--ignore=E123'
+
+autocmd FileType python setlocal formatprg=autopep8\ -
+autocmd FileType python setlocal equalprg=autopep8\ -
 
 " Configure Eclim and Syntastic integration for python
 let g:EclimPythonValidate = 0
@@ -578,8 +583,8 @@ function! OmniPopup(action)
   return a:action
 endfunction
 
-inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
-inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
+" inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
+" inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 
 " Python folding
 set nofoldenable
@@ -598,9 +603,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep=' '
 let g:airline#extensions#tabline#left_alt_sep='¦'
 " change default font for gvim to enable powerline symbols
-if has('gui_running')
-  set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
-endif
+" if has('gui_running')
+"   set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+" endif
 
 "****************************  IndentGuides SETTINGS  **************************
 " change default indent color for IndentGuides

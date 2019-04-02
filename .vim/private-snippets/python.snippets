@@ -54,7 +54,7 @@ snippet codejam "template for google programming contests" b
 
 """
 Submission for problem ${1:A}: ${2:Rank And File}
-of Google CodeJam ${3:2016}
+of Google CodeJam ${3:2017}
 
 Author: Christos Tsirigotis <tsirif@gmail.com>
 Date: `!p import time; snip.rv += time.strftime("%B %d, %Y")`
@@ -62,7 +62,6 @@ Date: `!p import time; snip.rv += time.strftime("%B %d, %Y")`
 
 
 from __future__ import absolute_import, print_function, division
-# from six import range, map, reduce, filter, zip, raw_input
 import itertools as itools
 from itertools import compress as cmpr
 from itertools import product as prd
@@ -93,10 +92,10 @@ def out(nc, solution):
 
 
 def solve():
-    T = int(raw_input())  # get number of test cases
+    T = int(input())  # get number of test cases
     for nc in range(1, T + 1):
         # input
-        A = list(map(int, raw_input().split()))  # get list of numbers
+        A = list(map(int, input().split()))  # get list of numbers
         A = int(raw_input())  # get a number
         # TODO things
         # ...

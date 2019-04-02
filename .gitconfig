@@ -14,3 +14,12 @@
 [alias]
   gtree = log --abbrev-commit --pretty=oneline --graph --all
   tree = log --abbrev-commit --pretty=oneline --graph
+  commiters = shortlog -nse --no-merges
+
+[submodule]
+	recurse = true
+
+[merge]
+	conflictstyle = diff3
+[diff]
+	algorithm = minimal
